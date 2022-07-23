@@ -1,0 +1,21 @@
+{
+    "db_conn": {
+        "host": "localhost",
+        "user": "root",
+        "password": "",
+        "database": "bolttech_challenge",
+        "port": 3306
+    },
+    "db_conn_PROD": {
+        "host": "localhost",
+        "user": "root",
+        "password": "",
+        "database": "bolttech_challenge",
+        "port": 3306
+    },
+    "backend": {
+        "port": 5000,
+        "jwt_secret": "hvnoawieg19jsz"
+    },
+    "test_env": true
+}
