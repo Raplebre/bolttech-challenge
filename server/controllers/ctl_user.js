@@ -1,7 +1,4 @@
 const dbHandlers = require('../db')
-const crypto = require('crypto')
-const jwt = require('jsonwebtoken')
-const config = require('../config.json')
 
 // Get user by ID
 const getUserById = (req, res, next) => {
@@ -11,10 +8,16 @@ const getUserById = (req, res, next) => {
                 console.log(err)
                 return res.status(500).json({message: "Database error getting user by ID", err})
             }
-            else {
+            else if (results) {
                 return res.json(results)
             }
+            else {
+                return res.status(404).send({message: "User not found"})
+            }
         })
+    }
+    else {
+        return res.status(400).send({message: "Bad request"})
     }
 }
 

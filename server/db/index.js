@@ -27,4 +27,6 @@ myQuery = function(queryString, values, callback) {
 
 module.exports = {
   Qgen_user: require("./Quser")(myQuery),
+  Qgen_project: require('./Qproject')(myQuery),
+  Qgen_task: require('./Qtask')(myQuery)
 };

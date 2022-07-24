@@ -1,5 +1,6 @@
 module.exports = {
     user: require('./ctl_user'),
-    passport: require('./passport'),
-    authentication: require('./ctl_authentication')
+    project: require('./ctl_project'),
+    task: require('./ctl_task'),
+    authentication: require('./ctl_authentication'),
 }

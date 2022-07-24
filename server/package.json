@@ -17,10 +17,7 @@
     "express-jwt": "^7.7.5",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
-    "passport": "^0.6.0",
-    "passport-custom": "^1.1.1",
-    "passport-jwt": "^4.0.0"
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"

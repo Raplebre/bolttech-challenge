@@ -1,9 +1,22 @@
-const passport = require("passport");
 const dbHandlers = require("../db");
 const config = require("../config.json");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 let exp;
+
+const verifyPassword = (user, password) => {
+  console.log("Verifying password");
+  let temphash = crypto
+    .pbkdf2Sync(password, user.salt, 100000, 64, "sha512")
+    .toString("hex");
+  if (user.hash === temphash) {
+    // Valid password
+    return true;
+  } else {
+    // Invalid password
+    return false;
+  }
+};
 
 const generateToken = account => {
   let expire = new Date();
@@ -21,9 +34,8 @@ const generateToken = account => {
   );
 };
 
-module.exports = {
-  signup: (req, res) => {
-    console.log("Creating account");
+const signup = (req, res) => {
+  console.log("Creating account");
     console.log(req.body)
     if (req.body.email && req.body.username && req.body.password) {
       //set account's password
@@ -59,42 +71,59 @@ module.exports = {
     } else {
       res.status(400).json({ message: "Bad params.", });
     }
-  },
-  login: (req, res) => {
-    console.log("Received login");
+}
+
+const login = (req, res) => {
+  console.log("Received login");
     if (req.body.email && req.body.password) {
+      let email = req.body.email
+      let password = req.body.password
       console.log("Attempting to login");
-
-      passport.authenticate("email", (error, user, info) => {
-        if (error) {
-          console.log("Error authenticating");
-          res.status(404).json({message:'Error authenticating', error});
-        }
-        else {
-          if (user && !user.deleted && req.body.email) {
-            console.log("Valid email and password combination");
-
-            var token = generateToken({
-              _id: user._id,
-              email: user.email,
-              username: user.username
-            });
-
-            res.status(200).json({
-              token,
-              expiresIn: exp - (new Date().getTime() / 1000)
-            });
-
-            console.log({
-              token,
-              expiresIn: exp - (new Date().getTime() / 1000)
-            });
-            console.log('User with ID ' + user._id + ' has logged in.')
+      dbHandlers.Qgen_user.Qget_UserByEmail(
+        email,
+        (err, user) => {
+          if (err) {
+            console.log("Error getting user");
+            return res.status(500).json({message: "Database error getting user", err});
+          }
+          if (!user) {
+            console.log("User not found");
+            return res.status(404).json({ message: "Email and password combination not found." });
+          }
+          if (!verifyPassword(user, password)) {
+            console.log('Wrong password')
+            return res.status(404).json({ message: "Email and password combination not found." });
           } else {
-            res.status(401).json({message: 'Authentication error'});
+            if (user && !user.deleted && email) {
+              console.log("Valid email and password combination");
+  
+              let token = generateToken({
+                _id: user.idUser,
+                email: user.email,
+                username: user.username
+              });
+              console.log(user)
+  
+              res.status(200).json({
+                token,
+                expiresIn: exp - (new Date().getTime() / 1000)
+              });
+  
+              console.log({
+                token,
+                expiresIn: exp - (new Date().getTime() / 1000)
+              });
+              console.log('User with ID ' + user.idUser + ' has logged in.')
+            } else {
+              res.status(401).json({message: 'Authentication error'});
+            }
           }
         }
-      })(req, res);
+      );
     }
-  }
+}
+
+module.exports = {
+  signup,
+  login
 };
