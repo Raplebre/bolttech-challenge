@@ -21,6 +21,28 @@ const getProjectById = (req, res, next) => {
     }
 }
 
+// Get projects by User ID
+const getProjectsByUserId = (req, res, next) => {
+    if (req.params.idUser) {
+        dbHandlers.Qgen_project.Qget_ProjectsByUserId(req.params.idUser, (err, results) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({message: "Database error getting projects by User ID", err})
+            }
+            else if (results && results.length > 0) {
+                console.log
+                return res.json(results)
+            }
+            else {
+                return res.status(404).send({message: "No projects found"})
+            }
+        })
+    }
+    else {
+        return res.status(400).send({message: "Bad request"})
+    }
+}
+
 // Create project
 const createProject = (req, res, next) => {
     if (req.body.name && req.body.idUser) {
@@ -65,6 +87,7 @@ const deleteProject = (req, res, next) => {
 
 module.exports = {
     getProjectById,
+    getProjectsByUserId,
     createProject,
     patchProject,
     deleteProject

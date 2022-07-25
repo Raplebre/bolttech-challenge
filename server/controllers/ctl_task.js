@@ -21,6 +21,28 @@ const getTaskById = (req, res, next) => {
     }
 }
 
+// Get tasks by Project ID
+const getTasksByProjectId = (req, res, next) => {
+    if (req.params.idProject) {
+        dbHandlers.Qgen_task.Qget_TasksByProjectId(req.params.idProject, (err, results) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({message: "Database error getting tasks by Project ID", err})
+            }
+            else if (results && results.length > 0) {
+                console.log
+                return res.json(results)
+            }
+            else {
+                return res.status(404).send({message: "No tasks found"})
+            }
+        })
+    }
+    else {
+        return res.status(400).send({message: "Bad request"})
+    }
+}
+
 // Create task
 const createTask = (req, res, next) => {
     if (req.body.description && req.body.finishDate && req.body.idProject) {
@@ -71,6 +93,7 @@ const deleteTask = (req, res, next) => {
 
 module.exports = {
     getTaskById,
+    getTasksByProjectId,
     createTask,
     patchTask,
     deleteTask

@@ -28,6 +28,7 @@ app.get('/api/user/:idUser', controllers.user.getUserById)
 
 // Project routes
 app.get('/api/project/:idProject', controllers.project.getProjectById)
+app.get('/api/projectsUser/:idUser', controllers.project.getProjectsByUserId)
 app.post('/api/project', controllers.project.createProject)
 app.patch('/api/project/:idProject', controllers.project.patchProject)
 app.delete('/api/project/:idProject', controllers.project.deleteProject)
@@ -35,6 +36,7 @@ app.delete('/api/project/:idProject', controllers.project.deleteProject)
 
 // Task routes
 app.get('/api/task/:idTask', controllers.task.getTaskById)
+app.get('/api/tasksProject/:idProject', controllers.task.getTasksByProjectId)
 app.post('/api/task', controllers.task.createTask)
 app.patch('/api/task/:idTask', controllers.task.patchTask)
 app.delete('/api/task/:idTask', controllers.task.deleteTask)
