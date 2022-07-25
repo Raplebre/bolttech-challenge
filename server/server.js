@@ -7,6 +7,7 @@ const controllers = require('./controllers')
 
 const app = express()
 const server = http.createServer(app)
+const port = config.backend.port
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -42,6 +43,6 @@ app.patch('/api/task/:idTask', controllers.task.patchTask)
 app.delete('/api/task/:idTask', controllers.task.deleteTask)
 //END Task routes
 
-server.listen(5000, () => {
-    console.log('Server listening on port 5000')
+server.listen(port, () => {
+    console.log('Server listening on port ' + port)
 })
