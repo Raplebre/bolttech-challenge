@@ -61,10 +61,10 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- Table `bolttech_challenge`.`task`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bolttech_challenge`.`task` (
-  `idTask` INT(11) NOT NULL,
+  `idTask` INT(11) NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(255) NOT NULL,
   `status` TINYINT(1) NOT NULL DEFAULT 0,
-  `finish_date` DATETIME NOT NULL,
+  `finish_date` DATE NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   `updated_at` DATETIME NULL DEFAULT NULL,
   `deleted` TINYINT(1) NOT NULL DEFAULT 0,
